@@ -50,7 +50,7 @@ if __name__ == "__main__":
 	num_cols = ["age", "fnlwgt", "education_num", "capital_gain", "capital_loss", "hours_per_week"]
 	cat_cols = ["workclass", "education", "marital_status", "occupation", "relationship", "race", "sex", "native_country"]
     
-    indexers = [StringIndexer(inputCol=column, outputCol=column+"-index") for column in cat_cols]
+   	indexers = [StringIndexer(inputCol=column, outputCol=column+"-index") for column in cat_cols]
 	
 	encoder = OneHotEncoderEstimator(
     	inputCols=[indexer.getOutputCol() for indexer in indexers],
@@ -79,6 +79,6 @@ if __name__ == "__main__":
 	model = lr.fit(df_train)
 	pred = model.transform(df_test)
 	evaluator = BinaryClassificationEvaluator(labelCol="label")
-    print(evaluator.evaluate(pred))
+    	print(evaluator.evaluate(pred))
 	
-    spark.stop()
+    	spark.stop()
