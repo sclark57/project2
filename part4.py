@@ -94,7 +94,7 @@ if __name__ == "__main__":
     
     	#Set up decision tree classifier
     	decTree = DecisionTreeClassifier(
-    		maxDepth = 10,
+		maxDepth = 10,
     		labelCol = "label",
    		featuresCol = "features")
 
