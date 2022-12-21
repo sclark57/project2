@@ -6,10 +6,10 @@ from __future__ import print_function
 import sys
 from subprocess import check_output
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import (count, col)
+from pyspark.sql.functions import count, col
 from pyspark.ml import Pipeline
-from pyspark.ml.feature import (OneHotEncoderEstimator, StringIndexer, VectorAssembler)
-from pyspark.ml.classification import (LogisticRegression)
+from pyspark.ml.feature import OneHotEncoderEstimator, StringIndexer, VectorAssembler
+from pyspark.ml.classification import LogisticRegression
 from pyspark.ml.evaluation import BinaryClassificationEvaluator
 
 if __name__ == "__main__":
