@@ -73,5 +73,5 @@ if __name__ == "__main__":
 	pred = model.transform(df_test)
 	evaluator = BinaryClassificationEvaluator(labelCol = "label")
     	print(evaluator.evaluate(pred))
-	
-    	spark.stop()
+    	
+	spark.stop()
