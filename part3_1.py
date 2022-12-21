@@ -38,8 +38,8 @@ if __name__ == "__main__":
     		StructField("salary", StringType(), True)])
 	
 	#Read and load census data (both training and testing sets)
-	df_train = spark.read.csv('../project2/data/adult_train.csv', header='false', schema = schema1)
-	df_test = spark.read.csv('../project2/data/adult_test.csv', header='false', schema = schema1)
+	df_train = spark.read.csv('data/adult_train.csv', header='false', schema = schema1)
+	df_test = spark.read.csv('data/adult_test.csv', header='false', schema = schema1)
     
    	#Sort columns into numerical and categorical types (excluding "salary" column)
 	num_cols = ["age", "fnlwgt", "education_num", "capital_gain", "capital_loss", "hours_per_week"]
