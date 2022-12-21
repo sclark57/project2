@@ -63,15 +63,14 @@ if __name__ == "__main__":
 	df_train = assembler.transform(df_train)
 	df_test = assembler.transform(df_test)
 	
-	indexer = StringIndexer(inputCol = 'salary', outputCol = 'label')
+	indexer = StringIndexer(inputCol = "salary", outputCol = "label")
 	df_train = indexer.fit(df_train).transform(df_train)
 	df_test = indexer.fit(df_test).transform(df_test)
-	df_train.limit(10).toPandas()['label']
+	df_train.limit(10).toPandas()["label"]
 	
-	lr = LogisticRegression(featuresCol = 'features', labelCol = 'label')
+	lr = LogisticRegression(featuresCol = "features", labelCol = "label")
 	model = lr.fit(df_train)
 	pred = model.transform(df_test)
 	evaluator = BinaryClassificationEvaluator(labelCol = "label")
-    	print(evaluator.evaluate(pred))
-    	
+	print(evaluator.evaluate(pred))
 	spark.stop()
