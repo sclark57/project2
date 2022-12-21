@@ -8,7 +8,7 @@ from subprocess import check_output
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import (count, col)
 from pyspark.ml import Pipeline
-from pyspark.ml.feature import (OneHotEncoderEstimator, StringIndexer, VectorAssembler)
+from pyspark.ml.feature import (OneHotEncoder, StringIndexer, VectorAssembler)
 from pyspark.ml.classification import LogisticRegression
 from pyspark.ml.evaluation import BinaryClassificationEvaluator
 
@@ -47,7 +47,7 @@ if __name__ == "__main__":
 	cat_cols = ["workclass", "education", "marital_status", "occupation", "relationship", "race", "sex", "native_country"]
 	
 	indexers = [StringIndexer(inputCol = column, outputCol = column + "-index") for column in cat_cols]
-	encoder = OneHotEncoderEstimator(inputCols = [indexer.getOutputCol() for indexer in indexers], outputCols = ["{0}-encoded".format(indexer.getOutputCol()) for indexer in indexers])
+	encoder = OneHotEncoder(inputCols = [indexer.getOutputCol() for indexer in indexers], outputCols = ["{0}-encoded".format(indexer.getOutputCol()) for indexer in indexers])
 	
 	assembler = VectorAssembler(
     		inputCols = encoder.getOutputCols(),
