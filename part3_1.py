@@ -3,14 +3,13 @@
 
 #Load necessary packages (Spark related libraries only - no sklearn)
 from __future__ import print_function
-import sys
-from subprocess import check_output
+from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import (count, col)
-from pyspark.ml import Pipeline
-from pyspark.ml.feature import (OneHotEncoder, StringIndexer, VectorAssembler)
 from pyspark.ml.classification import LogisticRegression
-from pyspark.ml.evaluation import BinaryClassificationEvaluator
+from pyspark.ml.feature import OneHotEncoder, StringIndexer, VectorAssembler
+from pyspark.ml import Pipeline
+from pyspark.sql.types import StructType, StructField, IntegerType, StringType
+import sys
 
 if __name__ == "__main__":
 	#Start the Spark session
