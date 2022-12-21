@@ -97,7 +97,7 @@ if __name__ == "__main__":
 	
 	#Evaluate model
 	pred = logModel.transform(df_test)
-    	evaluator = BinaryClassificationEvaluator(labelCol = "label")
-   	print(evaluator.evaluate(pred))
+	evaluator = BinaryClassificationEvaluator(labelCol = "label")
+	print(evaluator.evaluate(pred))
 	
 	spark.stop()
