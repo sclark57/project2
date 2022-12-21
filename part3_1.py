@@ -46,33 +46,32 @@ if __name__ == "__main__":
 	num_cols = ["age", "fnlwgt", "education_num", "capital_gain", "capital_loss", "hours_per_week"]
 	cat_cols = ["workclass", "education", "marital_status", "occupation", "relationship", "race", "sex", "native_country"]
 	
-   	indexers = [StringIndexer(inputCol=column, outputCol=column+"-index") for column in cat_cols]
+	indexers = [StringIndexer(inputCol = column, outputCol = column + "-index") for column in cat_cols]
 	encoder = OneHotEncoderEstimator(
-    		inputCols=[indexer.getOutputCol() for indexer in indexers],
-    		outputCols=["{0}-encoded".format(indexer.getOutputCol()) for indexer in indexers])
+    		inputCols = [indexer.getOutputCol() for indexer in indexers],
+    		outputCols = ["{0}-encoded".format(indexer.getOutputCol()) for indexer in indexers])
 	
 	assembler = VectorAssembler(
-    		inputCols=encoder.getOutputCols(),
-    		outputCol="categorical-columns")
+    		inputCols = encoder.getOutputCols(),
+    		outputCol = "categorical-columns")
 	
-	pipeline = Pipeline(stages=indexers + [encoder, assembler])
+	pipeline = Pipeline(stages = indexers + [encoder, assembler])
 	df_train = pipeline.fit(df_train).transform(df_train)
 	df_test = pipeline.fit(df_test).transform(df_test)
 	
-	assembler = VectorAssembler(
-    	inputCols=["categorical-columns", *num_cols], outputCol="features")
+	assembler = VectorAssembler(inputCols = ["categorical-columns", *num_cols], outputCol = "features")
 	df_train = assembler.transform(df_train)
 	df_test = assembler.transform(df_test)
 	
-	indexer = StringIndexer(inputCol='salary', outputCol='label')
+	indexer = StringIndexer(inputCol = 'salary', outputCol = 'label')
 	df_train = indexer.fit(df_train).transform(df_train)
 	df_test = indexer.fit(df_test).transform(df_test)
 	df_train.limit(10).toPandas()['label']
 	
-	lr = LogisticRegression(featuresCol='features', labelCol='label')
+	lr = LogisticRegression(featuresCol = 'features', labelCol = 'label')
 	model = lr.fit(df_train)
 	pred = model.transform(df_test)
-	evaluator = BinaryClassificationEvaluator(labelCol="label")
+	evaluator = BinaryClassificationEvaluator(labelCol = "label")
     	print(evaluator.evaluate(pred))
 	
     	spark.stop()
