@@ -22,13 +22,13 @@ if __name__ == "__main__":
 	#Read and load census data (training and testing)
 	df_train = spark.read.load('../input/adult_train.csv', 
 		format='com.databricks.spark.csv', 
-        header='false', 
-        inferSchema='true').cache()
+        	header='false', 
+        	inferSchema='true').cache()
 	
 	df_test = spark.read.load('../input/adult_test.csv', 
 		format='com.databricks.spark.csv', 
-        header='false', 
-        inferSchema='true').cache()
+        	header='false', 
+        	inferSchema='true').cache()
 
 	#Rename and clean up columns
 	education_num = col("`education.num`")
@@ -41,9 +41,9 @@ if __name__ == "__main__":
 	df_train = df.withColumn("education_num", education_num).drop(education_num)\
    		.withColumn("capital_gain", capital_gain).drop(capital_gain)\
    		.withColumn("capital_loss", capital_loss).drop(capital_loss)\
-    	.withColumn("hours_per_week", hours_per_week).drop(hours_per_week)\
-    	.withColumn("marital_status", marital_status).drop(marital_status)\
-    	.withColumn("native_country", native_country).drop(native_country)
+    		.withColumn("hours_per_week", hours_per_week).drop(hours_per_week)\
+    		.withColumn("marital_status", marital_status).drop(marital_status)\
+    		.withColumn("native_country", native_country).drop(native_country)
     
 	#Sort columns into numerical and categorical types
 	num_cols = ["age", "fnlwgt", "education_num", "capital_gain", "capital_loss", "hours_per_week"]
@@ -53,26 +53,26 @@ if __name__ == "__main__":
 	#Handle categorical columns
 	stages = []
 	for col in cat_cols:
-    	#Use StringIndexer for indexing of the columns
-    	stringIndexer = StringIndexer(
-       		inputCol = col, 
-        	outputCol = col + "_indx")
-    	#OneHotEncoder to convert categorical columns
-    	encoder = OneHotEncoder(
-       		inputCols = [stringIndexer.getOutputCol()], 
-        	outputCols = [col + "_vec"])
-    	stages += [stringIndexer, encoder]
+    		#Use StringIndexer for indexing of the columns
+    		stringIndexer = StringIndexer(
+       			inputCol = col, 
+        		outputCol = col + "_indx")
+    		#OneHotEncoder to convert categorical columns
+    		encoder = OneHotEncoder(
+       			inputCols = [stringIndexer.getOutputCol()], 
+        		outputCols = [col + "_vec"])
+    		stages += [stringIndexer, encoder]
     
 	#Convert label into label indices using StringIndexer
 	label_index = StringIndexer(
-    	inputCol = "income", 
+    		inputCol = "income", 
    		outputCol = "label")
 	stages += [label_index]
 
 	assembler_inputs = [c + "_vec" for c in cat_cols] + num_cols
 	assembler = VectorAssembler(
-    	inputCols = assembler_inputs, 
-    	outputCol = "features")
+    		inputCols = assembler_inputs, 
+    		outputCol = "features")
 	stages += [assembler]
 
 	#Create the pipeline
@@ -87,17 +87,17 @@ if __name__ == "__main__":
 
 	#Set up logistic regression model
 	logReg = LogisticRegression(
-    	maxIter = 10,
-    	regParam = 0.05,
-    	labelCol = "label",
-    	featuresCol = "features")
+    		maxIter = 10,
+    		regParam = 0.05,
+    		labelCol = "label",
+    		featuresCol = "features")
 	
 	#Fit model
 	logModel = logReg.fit(df_train)
 	
 	#Evaluate model
 	pred = logModel.transform(df_test)
-    evaluator = BinaryClassificationEvaluator(labelCol = "label")
-    print(evaluator.evaluate(pred))
+    	evaluator = BinaryClassificationEvaluator(labelCol = "label")
+   	print(evaluator.evaluate(pred))
 	
 	spark.stop()
