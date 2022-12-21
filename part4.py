@@ -93,11 +93,11 @@ if __name__ == "__main__":
     		featuresCol = "features")
     
     	#Set up decision tree classifier
-    	decTree = DecisionTreeClassifier(
+	decTree = DecisionTreeClassifier(
 		maxDepth = 10,
     		labelCol = "label",
    		featuresCol = "features")
-
+	
 	#Set up random forest classifier
 	randForest = RandomForestClassifier(
     		numTrees = 10,
