@@ -82,17 +82,17 @@ if __name__ == "__main__":
 
 	#Set logistic regression model
 	logReg = LogisticRegression(
-    	maxIter = 10,
-    	regParam = 0.05,
-    	labelCol="label",
-    	featuresCol="features")
+    		maxIter = 10,
+    		regParam = 0.05,
+    		labelCol = "label",
+    		featuresCol = "features")
 	
 	#Fit model
 	logModel = logReg.fit(df_train)
 	
 	#Evaluate model
 	pred = logModel.transform(df_test)
-   	evaluator = BinaryClassificationEvaluator(labelCol="label")
-   	print(evaluator.evaluate(pred))
+	evaluator = BinaryClassificationEvaluator(labelCol = "label")
+	print(evaluator.evaluate(pred))
 	
 	spark.stop()
