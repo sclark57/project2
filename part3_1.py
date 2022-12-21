@@ -46,27 +46,25 @@ if __name__ == "__main__":
         header='false', 
         schema = schema1)
     
-    #Sort columns into numerical and categorical types (excluding "salary" column)
+   	#Sort columns into numerical and categorical types (excluding "salary" column)
 	num_cols = ["age", "fnlwgt", "education_num", "capital_gain", "capital_loss", "hours_per_week"]
 	cat_cols = ["workclass", "education", "marital_status", "occupation", "relationship", "race", "sex", "native_country"]
-    
-   	indexers = [StringIndexer(inputCol=column, outputCol=column+"-index") for column in cat_cols]
 	
+   	indexers = [StringIndexer(inputCol=column, outputCol=column+"-index") for column in cat_cols]
 	encoder = OneHotEncoderEstimator(
-    	inputCols=[indexer.getOutputCol() for indexer in indexers],
-    	outputCols=["{0}-encoded".format(indexer.getOutputCol()) for indexer in indexers])
+    		inputCols=[indexer.getOutputCol() for indexer in indexers],
+    		outputCols=["{0}-encoded".format(indexer.getOutputCol()) for indexer in indexers])
 	
 	assembler = VectorAssembler(
-    	inputCols=encoder.getOutputCols(),
-    	outputCol="categorical-columns")
+    		inputCols=encoder.getOutputCols(),
+    		outputCol="categorical-columns")
 	
 	pipeline = Pipeline(stages=indexers + [encoder, assembler])
 	df_train = pipeline.fit(df_train).transform(df_train)
 	df_test = pipeline.fit(df_test).transform(df_test)
 	
 	assembler = VectorAssembler(
-    	inputCols=["categorical-columns", *num_cols],
-   	 	outputCol="features")
+    	inputCols=["categorical-columns", *num_cols], outputCol="features")
 	df_train = assembler.transform(df_train)
 	df_test = assembler.transform(df_test)
 	
