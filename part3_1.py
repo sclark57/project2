@@ -47,9 +47,7 @@ if __name__ == "__main__":
 	cat_cols = ["workclass", "education", "marital_status", "occupation", "relationship", "race", "sex", "native_country"]
 	
 	indexers = [StringIndexer(inputCol = column, outputCol = column + "-index") for column in cat_cols]
-	encoder = OneHotEncoderEstimator(
-    		inputCols = [indexer.getOutputCol() for indexer in indexers],
-    		outputCols = ["{0}-encoded".format(indexer.getOutputCol()) for indexer in indexers])
+	encoder = OneHotEncoderEstimator(inputCols = [indexer.getOutputCol() for indexer in indexers], outputCols = ["{0}-encoded".format(indexer.getOutputCol()) for indexer in indexers])
 	
 	assembler = VectorAssembler(
     		inputCols = encoder.getOutputCols(),
